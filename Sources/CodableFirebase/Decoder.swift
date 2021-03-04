@@ -1247,9 +1247,17 @@ extension _FirebaseDecoder {
             guard let decimal = try self.unbox(value, as: Decimal.self) else { return nil }
             decoded = decimal as! T
         } else if T.self == IndexSet.self || T.self == NSIndexSet.self {
-            decoded = value as! T
+            guard let value = value as? T else { 
+                throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath,
+                                                                        debugDescription: "Invalid type."))
+            }
+            decoded = value
         } else if options.skipFirestoreTypes && (T.self is FirestoreDecodable.Type) {
-            decoded = value as! T
+            guard let value = value as? T else { 
+                throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath,
+                                                                        debugDescription: "Invalid type."))
+            }
+            decoded = value
         } else {
             self.storage.push(container: value)
             decoded = try T(from: self)
