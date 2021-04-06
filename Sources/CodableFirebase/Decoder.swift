@@ -144,7 +144,21 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return entry is NSNull
     }
-    
+
+    private func tryToDecode<T: Decodable>(_ type: T.Type, forKey key: Key) -> T? {
+        do {
+            return try decode(type, forKey: key)
+        } catch DecodingError.keyNotFound {
+        } catch let err {
+            print("🔴 [DECODE]", err, "Value:", self.container[key.stringValue] ?? "")
+        }
+        return nil
+    }
+
+    public func decodeIfPresent(_ type: Bool.Type, forKey key: Key) throws -> Bool? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Bool.Type, forKey key: Key) throws -> Bool {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -159,7 +173,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: Int.Type, forKey key: Key) throws -> Int? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Int.Type, forKey key: Key) throws -> Int {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -174,7 +192,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: Int8.Type, forKey key: Key) throws -> Int8? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Int8.Type, forKey key: Key) throws -> Int8 {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -189,7 +211,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: Int16.Type, forKey key: Key) throws -> Int16? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Int16.Type, forKey key: Key) throws -> Int16 {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -204,7 +230,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: Int32.Type, forKey key: Key) throws -> Int32? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Int32.Type, forKey key: Key) throws -> Int32 {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -219,7 +249,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: Int64.Type, forKey key: Key) throws -> Int64? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Int64.Type, forKey key: Key) throws -> Int64 {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -234,7 +268,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: UInt.Type, forKey key: Key) throws -> UInt? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: UInt.Type, forKey key: Key) throws -> UInt {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -249,7 +287,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: UInt8.Type, forKey key: Key) throws -> UInt8? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: UInt8.Type, forKey key: Key) throws -> UInt8 {
         guard let entry = container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -264,7 +306,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: UInt16.Type, forKey key: Key) throws -> UInt16? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: UInt16.Type, forKey key: Key) throws -> UInt16 {
         guard let entry = container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -279,7 +325,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: UInt32.Type, forKey key: Key) throws -> UInt32? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: UInt32.Type, forKey key: Key) throws -> UInt32 {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -294,7 +344,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: UInt64.Type, forKey key: Key) throws -> UInt64? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: UInt64.Type, forKey key: Key) throws -> UInt64 {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -309,7 +363,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: Float.Type, forKey key: Key) throws -> Float? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Float.Type, forKey key: Key) throws -> Float {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -323,7 +381,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: Double.Type, forKey key: Key) throws -> Double? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: Double.Type, forKey key: Key) throws -> Double {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -338,7 +400,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         
         return value
     }
-    
+
+    public func decodeIfPresent(_ type: String.Type, forKey key: Key) throws -> String? {
+        return tryToDecode(type, forKey: key)
+    }
+
     public func decode(_ type: String.Type, forKey key: Key) throws -> String {
         guard let entry = self.container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
@@ -352,6 +418,10 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         }
         
         return value
+    }
+
+    public func decodeIfPresent(_ type: IndexSet.Type, forKey key: Key) throws -> IndexSet? {
+        return tryToDecode(type, forKey: key)
     }
 
     public func decode(_ type: IndexSet.Type, forKey key: Key) throws -> IndexSet {
@@ -369,8 +439,11 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         return IndexSet(value)
     }
 
-    
-    public func decode<T : Decodable>(_ type: T.Type, forKey key: Key) throws -> T {
+    func decodeIfPresent<T>(_ type: T.Type, forKey key: Self.Key) throws -> T? where T : Decodable {
+        return tryToDecode(type, forKey: key)
+    }
+
+    func decode<T>(_ type: T.Type, forKey key: Self.Key) throws -> T where T : Decodable {
         guard let entry = container[key.stringValue] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
@@ -1236,12 +1309,10 @@ extension _FirebaseDecoder {
             guard let urlString = try self.unbox(value, as: String.self) else {
                 return nil
             }
-            
             guard let url = URL(string: urlString) else {
                 throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath,
                                                                         debugDescription: "Invalid URL string."))
             }
-            
             decoded = (url as! T)
         } else if T.self == Decimal.self || T.self == NSDecimalNumber.self {
             guard let decimal = try self.unbox(value, as: Decimal.self) else { return nil }
