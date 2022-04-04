@@ -149,6 +149,7 @@ fileprivate struct _FirebaseKeyedDecodingContainer<K : CodingKey> : KeyedDecodin
         do {
             return try decode(type, forKey: key)
         } catch DecodingError.keyNotFound {
+        } catch DecodingError.valueNotFound {
         } catch let err {
             print("🔴 [DECODE]", err, "Value:", self.container[key.stringValue] ?? "")
         }
